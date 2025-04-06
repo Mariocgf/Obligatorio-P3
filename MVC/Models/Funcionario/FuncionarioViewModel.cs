@@ -1,0 +1,12 @@
+﻿namespace MVC.Models.Funcionario
+{
+    public class FuncionarioViewModel
+    {
+        public string Nombre { get; set; }
+        public string Apellido { get; set; }
+        public string CI { get; set; }
+        public string Celular { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+}
