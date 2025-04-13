@@ -1,4 +1,6 @@
-﻿namespace MVC.Models.Funcionario
+﻿using MVC.Models.Rol;
+
+namespace MVC.Models.Funcionario
 {
     public class FuncionarioViewModel
     {
@@ -8,5 +10,8 @@
         public string Celular { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public int RolId { get; set; }
+
+        public IEnumerable<RolViewModel> Roles { get; set; } = new List<RolViewModel>();
     }
 }

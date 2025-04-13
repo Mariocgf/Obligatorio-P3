@@ -9,5 +9,6 @@ namespace LogicaNegocio.InterfacesRepositorio
     public interface IRepositorioUsuario : IRepositorio<Usuario>
     {
         Usuario? GetByEmail(string email);
+        IEnumerable<Usuario> GetByRol(int rolId);
     }
 }

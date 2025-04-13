@@ -13,6 +13,7 @@ namespace Compartido.Mappers
         {
             return new UsuarioLoggedDTO()
             {
+                Id = usuario.Id,
                 Nombre = usuario.Nombre,
                 Apellido = usuario.Apellido,
                 Email = usuario.Email.Value,

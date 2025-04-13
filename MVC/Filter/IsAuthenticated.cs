@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace MVC.Filter
 {
@@ -9,7 +10,5 @@ namespace MVC.Filter
             if (context.HttpContext.Session.GetString("Rol") != null)
                 context.Result = new RedirectResult("/");
         }
-    }
-    {
     }
 }

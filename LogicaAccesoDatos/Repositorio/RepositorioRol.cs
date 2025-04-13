@@ -27,12 +27,12 @@ namespace LogicaAccesoDatos.Repositorio
 
         public IEnumerable<Rol> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Roles;
         }
 
         public Rol? GetById(int id)
         {
-            return _context.Roles.FirstOrDefault(rol => rol.Id == id);
+            return _context.Roles.Find(id);
         }
         public Rol? GetByName(string name)
         {

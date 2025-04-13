@@ -39,15 +39,29 @@
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" type="password" class="form-control" />
+                <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RolId" class="control-label"></label>
+                <select asp-for="RolId" class="form-control" >
+                    <option value="">Select a role</option>
+                    @foreach (var role in Model.Roles)
+                    {
+                        if(role.Nombre != "Cliente")
+                        {
+                            <option value="@role.Id">@role.Nombre</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="RolId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
-        <p>@ViewBag.Msg</p>
     </div>
+    <p>@ViewBag.Msg</p>
 </div>
 
 <div>

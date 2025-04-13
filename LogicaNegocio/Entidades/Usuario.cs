@@ -16,8 +16,9 @@ namespace LogicaNegocio.Entidades
         public string Celular { get; set; }
         public Email Email { get; set; }
         public Password Password { get; set; }
+        public Rol Rol { get; set; }
         public int RolId { get; set; }
-        public Usuario(string nombre, string apellido, string cI, string celular, string email, string password, int rolId)
+        public Usuario(string nombre, string apellido, string cI, string celular, string email, string password, Rol rol)
         {
             Nombre = nombre;
             Apellido = apellido;
@@ -25,7 +26,8 @@ namespace LogicaNegocio.Entidades
             Celular = celular;
             Email = new Email(email);
             Password = new Password(password);
-            RolId = rolId;
+            Rol = rol;
+            RolId = rol.Id;
         }
         public Usuario() { }
 

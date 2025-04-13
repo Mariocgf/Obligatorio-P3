@@ -7,5 +7,6 @@
         public string Apellido { get; set; }
         public string CI { get; set; }
         public string Email { get; set; }
+        public string Rol { get; set; }
     }
 }

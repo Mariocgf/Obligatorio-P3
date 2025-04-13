@@ -1,6 +1,6 @@
-﻿using Compartido.DTOs;
+﻿using Compartido.DTOs.Funcionario;
 
-namespace LogicaAplicacion.InterfacesCasosUso
+namespace LogicaAplicacion.InterfacesCasosUso.FuncionarioCU
 {
     public interface IListarFuncionarios
     {

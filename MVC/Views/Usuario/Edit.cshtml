@@ -1,4 +1,4 @@
-﻿@model MVC.Models.Funcionario.FuncionarioViewModel
+﻿@model MVC.Models.Funcionario.FuncionarioUpdateViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,12 +6,17 @@
 
 <h1>Edit</h1>
 
-<h4>FuncionarioViewModel</h4>
+<h4>FuncionarioUpdateViewModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group" style="display:none">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
                 <input asp-for="Nombre" class="form-control" />
@@ -39,14 +44,36 @@
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
+                <input asp-for="Password" type="password" class="form-control" value="@Model.Password"/>
                 <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RolId" class="control-label"></label>
+                <select asp-for="RolId" class="form-control">
+                    <option value="">Select a role</option>
+                    @foreach (var role in Model.Roles)
+                    {
+                        if (role.Nombre != "Cliente")
+                        {
+                            if(role.Id == Model.RolId)
+                            {
+                                <option value="@role.Id" selected>@role.Nombre</option>
+                            }
+                            else
+                            {
+                                <option value="@role.Id">@role.Nombre</option>
+                            }
+                        }
+                    }
+                </select>
+                <span asp-validation-for="RolId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
+    <p>@ViewBag.Msg</p>
 </div>
 
 <div>

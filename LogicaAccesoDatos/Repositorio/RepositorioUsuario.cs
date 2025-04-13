@@ -1,5 +1,7 @@
 ﻿using LogicaNegocio.Entidades;
+using LogicaNegocio.ExepcionesEntidades;
 using LogicaNegocio.InterfacesRepositorio;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,51 +10,68 @@ using System.Threading.Tasks;
 
 namespace LogicaAccesoDatos.Repositorio
 {
-    public class RepositorioUsuario : IRepositorioUsuario, IRepositorioFuncionario
+    public class RepositorioUsuario : IRepositorioUsuario
     {
-        private Context Context { get; set; }
+        private readonly Context _context;
         public RepositorioUsuario(Context context)
         {
-            Context = context;
+            _context = context;
         }
         public void Add(Usuario entity)
         {
             if(entity == null)
                 throw new ArgumentNullException("Datos vacios.");
-            Usuario usuario = GetByEmail(entity.Email.Value);
+            Usuario? usuario = GetByEmail(entity.Email.Value);
             if (usuario != null)
-                throw new ArgumentException("El usuario ya existe en la base de datos.");
-            Context.Usuarios.Add(entity);
-            Context.SaveChanges();
+                throw new UsuarioException("El usuario o mail ya esta registrado!");
+            if (GetByCI(entity.CI) != null)
+                throw new UsuarioException("Ya existe un usuario con esa cedula de identidad.");
+            _context.Usuarios.Add(entity);
+            _context.SaveChanges();
         }
 
         public void Delete(Usuario entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+                throw new ArgumentNullException("Datos vacios.");
+            Usuario? usuario = GetById(entity.Id) ?? throw new UsuarioException("El usuario a eliminar no existe.");
+            _context.Usuarios.Remove(entity);
+            _context.SaveChanges();
         }
 
         public IEnumerable<Usuario> GetAll()
         {
-            return Context.Usuarios;
+            return _context.Usuarios;
         }
 
         public Usuario? GetByEmail(string email)
         {
-            return Context.Usuarios.FirstOrDefault(user => user.Email.Value == email);
+            return _context.Usuarios.FirstOrDefault(user => user.Email.Value == email);
         }
 
         public Usuario? GetById(int id)
         {
-            return Context.Usuarios.FirstOrDefault(user => user.Id == id);
+            return _context.Usuarios.Find(id);
         }
 
         public void Update(Usuario entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+                throw new ArgumentNullException("Datos vacios, no se puede actualizar los cambios.");
+            Usuario? usuario = GetById(entity.Id) ?? throw new UsuarioException("El usuario no esta registrado.");
+            if (usuario.Id != entity.Id && usuario.Email.Value == entity.Email.Value)
+                throw new UsuarioException("Ya existe un usuario con ese email.");
+            _context.Entry(usuario).State = EntityState.Detached;
+            _context.Usuarios.Update(entity);
+            _context.SaveChanges();
         }
-        public IEnumerable<Usuario> GetByFuncionario(int rolId)
+        public IEnumerable<Usuario> GetByRol(int rolId)
         {
-            return Context.Usuarios.Where(user => user.RolId == rolId);
+            return _context.Usuarios.Where(user => user.Rol.Id == rolId);
+        }
+        private Usuario? GetByCI(string ci)
+        {
+            return _context.Usuarios.FirstOrDefault(user => user.CI == ci);
         }
     }
 }

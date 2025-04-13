@@ -1,7 +1,13 @@
 using LogicaAccesoDatos;
 using LogicaAccesoDatos.Repositorio;
 using LogicaAplicacion.CasosUso;
+using LogicaAplicacion.CasosUso.AgenciaCU;
+using LogicaAplicacion.CasosUso.EnvioCU;
+using LogicaAplicacion.CasosUso.FuncionarioCU;
 using LogicaAplicacion.InterfacesCasosUso;
+using LogicaAplicacion.InterfacesCasosUso.AgenciaCU;
+using LogicaAplicacion.InterfacesCasosUso.EnvioCU;
+using LogicaAplicacion.InterfacesCasosUso.FuncionarioCU;
 using LogicaNegocio.InterfacesRepositorio;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,17 +22,30 @@ namespace MVC
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddSession();
+
             //Repositorios
             builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
             builder.Services.AddScoped<IRepositorioRol, RepositorioRol>();
-            builder.Services.AddScoped<IRepositorioFuncionario, RepositorioUsuario>();
-
+            builder.Services.AddScoped<IRepositorioAuditoria, RepositorioAuditoria>();
+            builder.Services.AddScoped<IRepositorioAgencia, RepositorioAgencia>();
+            builder.Services.AddScoped<IRepositorioEnvioComun, RepositorioEnvioComun>();
+            builder.Services.AddScoped<IRepositorioEnvioUrgente, RepositorioEnvioUrgente>();
 
             //Casos de uso
             builder.Services.AddScoped<IUsuarioLogin, UsuarioLogin>();
+
             builder.Services.AddScoped<IAltaFuncionario, AltaFuncionario>();
             builder.Services.AddScoped<IListarFuncionarios, ListarFuncionarios>();
             builder.Services.AddScoped<IDetalleFuncionario, DetalleFuncionario>();
+            builder.Services.AddScoped<IDetalleUpdateFuncionario, DetalleUpdateFuncionario>();
+            builder.Services.AddScoped<IUpdateFuncionario, UpdateFuncionario>();
+            builder.Services.AddScoped<IEliminarFuncionario, EliminarFuncionario>();
+
+            builder.Services.AddScoped<IListarRoles, ListarRoles>();
+
+            builder.Services.AddScoped<IAltaEnvio, AltaEnvio>();
+
+            builder.Services.AddScoped<IListarSAgencia, ListarSAgencia>();
 
             //Contexto
             builder.Services.AddDbContext<Context>(options =>

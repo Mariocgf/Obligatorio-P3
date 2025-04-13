@@ -4,6 +4,6 @@ namespace LogicaNegocio.InterfacesRepositorio
 {
     public interface IRepositorioRol : IRepositorio<Rol>
     {
-        Rol GetByName(string v);
+        Rol? GetByName(string name);
     }
 }
