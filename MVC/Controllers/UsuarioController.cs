@@ -99,7 +99,6 @@ namespace MVC.Controllers
             return View(funcionarioVM);
         }
         // GET: UsuarioController/Login
-        [IsAuthenticated]
         public ActionResult Login()
         {
             return View();
@@ -107,7 +106,6 @@ namespace MVC.Controllers
 
         // POST: UsuarioController/Login
         [HttpPost]
-        [IsAuthenticated]
         [ValidateAntiForgeryToken]
         public ActionResult Login(UsuarioLoginViewModel usuarioLoginVM)
         {

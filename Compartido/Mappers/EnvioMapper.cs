@@ -18,5 +18,18 @@ namespace Compartido.Mappers
         {
             return new Comun(funcionario, cliente, envioDTO.Peso, agencia);
         }
+        public static List<EnvioListadoDTO> EnvioTOEnvioListadoDTO(List<Envio> envio, List<Usuario> usuarios)
+        {
+            return envio.Select(e => new EnvioListadoDTO
+            {
+                Id = e.Id,
+                NroTracking = e.NroTracking,
+                Empleado = $"{usuarios.FirstOrDefault(u => u.Id == e.Empleado.Id).Nombre} {usuarios.FirstOrDefault(u => u.Id == e.Empleado.Id).Apellido}",
+                Cliente = $"{usuarios.FirstOrDefault(u => u.Id == e.Cliente.Id).Nombre} {usuarios.FirstOrDefault(u => u.Id == e.Cliente.Id).Apellido}",
+                Peso = e.Peso,
+                Estado = e.Estado.ToString(),
+                TipoEnvio = e is Comun ? "Comun" : "Urgente",
+            }).ToList();
     }
+}
 }

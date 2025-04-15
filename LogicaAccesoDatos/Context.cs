@@ -11,6 +11,7 @@ namespace LogicaAccesoDatos
         public DbSet<Comun> EnvioComun { get; set; }
         public DbSet<Agencia> Agencias { get; set; }
         public DbSet<Auditoria> Auditorias { get; set; }
+        public DbSet<Envio> Envios { get; set; }
         public Context(DbContextOptions options) : base(options)
         {
         }

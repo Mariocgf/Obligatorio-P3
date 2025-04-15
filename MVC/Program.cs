@@ -30,6 +30,7 @@ namespace MVC
             builder.Services.AddScoped<IRepositorioAgencia, RepositorioAgencia>();
             builder.Services.AddScoped<IRepositorioEnvioComun, RepositorioEnvioComun>();
             builder.Services.AddScoped<IRepositorioEnvioUrgente, RepositorioEnvioUrgente>();
+            builder.Services.AddScoped<IRepositorioEnvio, RepositorioEnvio>();
 
             //Casos de uso
             builder.Services.AddScoped<IUsuarioLogin, UsuarioLogin>();
@@ -44,6 +45,7 @@ namespace MVC
             builder.Services.AddScoped<IListarRoles, ListarRoles>();
 
             builder.Services.AddScoped<IAltaEnvio, AltaEnvio>();
+            builder.Services.AddScoped<IListarEnvios, ListarEnvios>();
 
             builder.Services.AddScoped<IListarSAgencia, ListarSAgencia>();
 

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace MVC.Filter
 {
-    public class Admin_Func : Attribute, IAuthorizationFilter
+    public class Funcionarios : Attribute, IAuthorizationFilter
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {

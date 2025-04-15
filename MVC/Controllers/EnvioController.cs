@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MVC.Helpers;
 using MVC.Models;
+using MVC.Models.Envio;
+using MVC.Filter;
 
 namespace MVC.Controllers
 {
@@ -12,15 +14,38 @@ namespace MVC.Controllers
     {
         private readonly IAltaEnvio _altaEnvio;
         private readonly IListarSAgencia _listarSAgencia;
-        public EnvioController(IAltaEnvio altaEnvio, IListarSAgencia listarSAgencia)
+        private readonly IListarEnvios _listarEnvios;
+        public EnvioController(IAltaEnvio altaEnvio, IListarSAgencia listarSAgencia, IListarEnvios listarEnvios)
         {
             _altaEnvio = altaEnvio;
             _listarSAgencia = listarSAgencia;
+            _listarEnvios = listarEnvios;
         }
         // GET: EnvioController
+        [Funcionarios]
+        [IsAuthenticated]
         public ActionResult Index()
         {
-            return View();
+            List<EnvioListadoViewModel> enviosVM = new List<EnvioListadoViewModel>();
+            try
+            {
+                List<EnvioListadoDTO> envios= _listarEnvios.Ejecutar();
+                enviosVM = envios.Select(e => new EnvioListadoViewModel
+                {
+                    Id = e.Id,
+                    NroTracking = e.NroTracking,
+                    Empleado = e.Empleado,
+                    Cliente = e.Cliente,
+                    Peso = e.Peso,
+                    Estado = e.Estado,
+                    TipoEnvio = e.TipoEnvio,
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Msg = ex.Message;
+            }
+            return View(enviosVM);
         }
 
         // GET: EnvioController/Details/5
@@ -28,7 +53,8 @@ namespace MVC.Controllers
         {
             return View();
         }
-
+        [Funcionarios]
+        [IsAuthenticated]
         // GET: EnvioController/Create
         public ActionResult Create()
         {
@@ -48,6 +74,8 @@ namespace MVC.Controllers
         // POST: EnvioController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Funcionarios]
+        [IsAuthenticated]
         public ActionResult Create(EnvioCreateViewModel envioVM)
         {
 
