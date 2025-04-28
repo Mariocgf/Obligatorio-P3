@@ -4,10 +4,12 @@ using LogicaAplicacion.CasosUso;
 using LogicaAplicacion.CasosUso.AgenciaCU;
 using LogicaAplicacion.CasosUso.EnvioCU;
 using LogicaAplicacion.CasosUso.FuncionarioCU;
+using LogicaAplicacion.CasosUso.UsuarioCU;
 using LogicaAplicacion.InterfacesCasosUso;
 using LogicaAplicacion.InterfacesCasosUso.AgenciaCU;
 using LogicaAplicacion.InterfacesCasosUso.EnvioCU;
 using LogicaAplicacion.InterfacesCasosUso.FuncionarioCU;
+using LogicaAplicacion.InterfacesCasosUso.UsuarioCU;
 using LogicaNegocio.InterfacesRepositorio;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,20 +35,23 @@ namespace MVC
             builder.Services.AddScoped<IRepositorioEnvio, RepositorioEnvio>();
 
             //Casos de uso
+            //Usuario
             builder.Services.AddScoped<IUsuarioLogin, UsuarioLogin>();
-
+            builder.Services.AddScoped<IListarSelectUsuario, ListarSelectUsuario>();
+            
             builder.Services.AddScoped<IAltaFuncionario, AltaFuncionario>();
             builder.Services.AddScoped<IListarFuncionarios, ListarFuncionarios>();
             builder.Services.AddScoped<IDetalleFuncionario, DetalleFuncionario>();
             builder.Services.AddScoped<IDetalleUpdateFuncionario, DetalleUpdateFuncionario>();
             builder.Services.AddScoped<IUpdateFuncionario, UpdateFuncionario>();
             builder.Services.AddScoped<IEliminarFuncionario, EliminarFuncionario>();
-
+            //Role
             builder.Services.AddScoped<IListarRoles, ListarRoles>();
-
-            builder.Services.AddScoped<IAltaEnvio, AltaEnvio>();
+            //Envio
+            builder.Services.AddScoped<IAltaEnvioUrgente, AltaEnvioUrgente>();
+            builder.Services.AddScoped<IAltaEnvioComun, AltaEnvioComun>();
             builder.Services.AddScoped<IListarEnvios, ListarEnvios>();
-
+            //Agencia
             builder.Services.AddScoped<IListarSAgencia, ListarSAgencia>();
 
             //Contexto

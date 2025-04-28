@@ -20,5 +20,13 @@ namespace Compartido.Mappers
                 Rol = rol.Nombre
             };
         }
+        public static List<InfoSelectDTO> UsuarioToInfoSelectDto(List<Usuario> usuarios)
+        {
+            return [..usuarios.Select(u => new InfoSelectDTO()
+            {
+                Id = u.Id,
+                Nombre = u.Email.Value
+            })];
+        }
     }
 }

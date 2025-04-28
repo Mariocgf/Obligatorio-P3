@@ -10,11 +10,11 @@ namespace Compartido.Mappers
 {
     public class EnvioMapper
     {
-        public static Urgente UrgenteFromEnvioDTO(EnvioDTO envioDTO, Usuario cliente, Usuario funcionario)
+        public static Urgente UrgenteFromEnvioDTO(EnvioUrgenteDTO envioDTO, Usuario cliente, Usuario funcionario)
         {
             return new Urgente(funcionario, cliente, envioDTO.Peso, envioDTO.DireccionPostal);
         }
-        public static Comun ComunFromEnvioDTO(EnvioDTO envioDTO, Usuario cliente, Usuario funcionario, Agencia agencia)
+        public static Comun ComunFromEnvioDTO(EnvioComunDTO envioDTO, Usuario cliente, Usuario funcionario, Agencia agencia)
         {
             return new Comun(funcionario, cliente, envioDTO.Peso, agencia);
         }

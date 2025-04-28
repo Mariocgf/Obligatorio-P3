@@ -1,7 +1,7 @@
 ﻿@model MVC.Models.EnvioCreateViewModel
 
 @{
-    ViewData["Title"] = "Create";
+	ViewData["Title"] = "Create";
 }
 
 <h1>Create</h1>
@@ -9,53 +9,62 @@
 <h4>EnvioCreateViewModel</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="EsUrgente" /> @Html.DisplayNameFor(model => model.EsUrgente)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="EmailCliente" class="control-label"></label>
-                <input asp-for="EmailCliente" class="form-control" />
-                <span asp-validation-for="EmailCliente" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AgenciaId" class="control-label"></label>
-                <select asp-for="AgenciaId" class="form-control">
-                    <option value="">Select a role</option>
-                    @foreach (var agencia in Model.Agencias)
-                    {
-                        <option value="@agencia.Id">@agencia.Nombre</option>
-                    }
-                </select>
-                <span asp-validation-for="AgenciaId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DireccionPostal" class="control-label"></label>
-                <input asp-for="DireccionPostal" class="form-control" />
-                <span asp-validation-for="DireccionPostal" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Peso" class="control-label"></label>
-                <input asp-for="Peso" class="form-control" />
-                <span asp-validation-for="Peso" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+	<div class="col-md-4">
+		<form asp-action="Create">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group form-check">
+				<label class="form-check-label">
+					<input class="form-check-input" asp-for="EsUrgente" /> @Html.DisplayNameFor(model => model.EsUrgente)
+				</label>
+			</div>
+			<div class="form-group">
+				<label asp-for="EmailCliente" class="control-label"></label>
+				<select asp-for="EmailCliente" class="form-control">
+					<option value="">Seleccione usuario</option>
+					@foreach (var usuario in Model.Usuarios)
+					{
+						@if (usuario.Nombre != Context.Session.GetString("Email"))
+						{
+							<option value="@usuario.Id">@usuario.Nombre</option>
+						}
+					}
+				</select>
+				<span asp-validation-for="AgenciaId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="AgenciaId" class="control-label"></label>
+				<select asp-for="AgenciaId" class="form-control">
+					<option value="">Seleccione agencia</option>
+					@foreach (var agencia in Model.Agencias)
+					{
+						<option value="@agencia.Id">@agencia.Nombre</option>
+					}
+				</select>
+				<span asp-validation-for="AgenciaId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="DireccionPostal" class="control-label"></label>
+				<input asp-for="DireccionPostal" class="form-control" />
+				<span asp-validation-for="DireccionPostal" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Peso" class="control-label"></label>
+				<input asp-for="Peso" class="form-control" />
+				<span asp-validation-for="Peso" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Create" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
 </div>
 <p>@ViewBag.Msg</p>
 <div>
-    <a asp-action="Index">Back to List</a>
+	<a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 }

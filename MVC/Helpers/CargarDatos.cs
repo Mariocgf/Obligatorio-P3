@@ -2,6 +2,7 @@
 using Compartido.DTOs.Agencia;
 using LogicaAplicacion.InterfacesCasosUso;
 using LogicaAplicacion.InterfacesCasosUso.AgenciaCU;
+using LogicaAplicacion.InterfacesCasosUso.UsuarioCU;
 using MVC.Models;
 using MVC.Models.Agencia;
 using MVC.Models.Funcionario;
@@ -33,6 +34,15 @@ namespace MVC.Helpers
         {
             List<AgenciaSelectDTO> listaAgenciaDTO = listaSAgencia.Ejecutar();
             envioVM.Agencias = listaAgenciaDTO.Select(r => new AgenciaSelectViewModel()
+            {
+                Id = r.Id,
+                Nombre = r.Nombre
+            }).ToList();
+        }
+        public static void UsuarioSelect(EnvioCreateViewModel envioVM, IListarSelectUsuario listaSUsuario)
+        {
+            List<InfoSelectDTO> listaAgenciaDTO = listaSUsuario.Ejecutar();
+            envioVM.Usuarios = listaAgenciaDTO.Select(r => new SelectInfoViewModel()
             {
                 Id = r.Id,
                 Nombre = r.Nombre

@@ -1,8 +1,8 @@
 ﻿using Compartido.DTOs.Envio;
 namespace LogicaAplicacion.InterfacesCasosUso.EnvioCU
 {
-    public interface IAltaEnvio
+    public interface IUpdateEnvio
     {
-        void Ejecutar(EnvioDTO envioDTO, int idFuncionario);
+        void Ejecutar(EnvioUpdateDTO envioDto);
     }
 }
