@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogicaNegocio.Entidades
 {
-    public enum Estado
+    public enum Estados
     {
         EN_PROCESO,
         FINALIZADO
@@ -20,14 +20,17 @@ namespace LogicaNegocio.Entidades
         public Usuario Empleado { get; set; }
         public Usuario Cliente { get; set; }
         public decimal Peso { get; set; }
-        public Estado Estado { get; set; }
+        public Estados Estado { get; set; }
+        public DateTime FechaCreacion { get; set; }
+        public DateTime FechaEntrega { get; set; }
         public Envio(Usuario empleado, Usuario cliente, decimal peso)
         {
             NroTracking = Guid.NewGuid().ToString();
             Empleado = empleado;
             Cliente = cliente;
             Peso = peso;
-            Estado = Estado.EN_PROCESO;
+            Estado = Estados.EN_PROCESO;
+            FechaCreacion = DateTime.Now;
         }
         public Envio() { }
     }

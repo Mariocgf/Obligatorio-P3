@@ -8,6 +8,7 @@ using MVC.Models;
 using MVC.Models.Envio;
 using MVC.Filter;
 using LogicaAplicacion.InterfacesCasosUso.UsuarioCU;
+using LogicaNegocio.ExepcionesEntidades;
 
 namespace MVC.Controllers
 {
@@ -18,15 +19,20 @@ namespace MVC.Controllers
         private readonly IListarSAgencia _listarSAgencia;
         private readonly IListarEnvios _listarEnvios;
         private readonly IListarSelectUsuario _listarSUsuario;
+        private readonly IDetalleEnvio _detalleEnvio;
+        private readonly IUpdateEnvio _updateEnvio;
         public EnvioController(IAltaEnvioUrgente altaEnvioUrgente, IAltaEnvioComun altaEnvioComun,
                                IListarSAgencia listarSAgencia, IListarEnvios listarEnvios,
-                               IListarSelectUsuario listarSUsuario)
+                               IListarSelectUsuario listarSUsuario, IDetalleEnvio detalleEnvio,
+                               IUpdateEnvio updateEnvio)
         {
             _altaEnvioUrgente = altaEnvioUrgente;
             _altaEnvioComun = altaEnvioComun;
             _listarSAgencia = listarSAgencia;
             _listarEnvios = listarEnvios;
             _listarSUsuario = listarSUsuario;
+            _detalleEnvio = detalleEnvio;
+            _updateEnvio = updateEnvio;
         }
         // GET: EnvioController
         [Funcionarios]
@@ -131,22 +137,66 @@ namespace MVC.Controllers
         // GET: EnvioController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            EnvioDetalleViewModel envioVM = new EnvioDetalleViewModel();
+            try
+            {
+                EnvioDetalleDto envioDto = _detalleEnvio.Ejecutar(id);
+                envioVM = new EnvioDetalleViewModel
+                {
+                    Id = envioDto.Id,
+                    NroTracking = envioDto.NroTracking,
+                    Empleado = envioDto.Empleado,
+                    Cliente = envioDto.Cliente,
+                    Peso = envioDto.Peso,
+                    Estado = envioDto.Estado,
+                    TipoEnvio = envioDto.TipoEnvio,
+                    FechaCreacion = envioDto.FechaCreacion,
+                    FechaEntrega = envioDto.FechaEntrega,
+                    Estados = envioDto.Estados
+                };
+            }
+            catch (EnvioException e)
+            {
+                ViewBag.Msg = e.Message;
+            }
+            catch (Exception)
+            {
+                ViewBag.Msg = "Error al cargar el envio";
+            }
+            return View(envioVM);
         }
 
         // POST: EnvioController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(EnvioDetalleDto envioVM)
         {
             try
             {
+                if (!ModelState.IsValid)
+                    throw new ArgumentException("Datos invalidos");
+                EnvioUpdateDTO envioUDto = new EnvioUpdateDTO
+                {
+                    Id = envioVM.Id,
+                    NroTracking = envioVM.NroTracking,
+                    Estado = envioVM.Estado
+                };
+                _updateEnvio.Ejecutar(envioUDto);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (EnvioException e)
             {
-                return View();
+                ViewBag.Msg = e.Message;
             }
+            catch (ArgumentException)
+            {
+                ViewBag.Msg = "Valores vacios";
+            }
+            catch (Exception)
+            {
+                ViewBag.Msg = "Error al cargar el envio";
+            }
+            return View();
         }
 
         // GET: EnvioController/Delete/5

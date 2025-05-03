@@ -1,5 +1,7 @@
 ﻿using LogicaNegocio.Entidades;
+using LogicaNegocio.ExepcionesEntidades;
 using LogicaNegocio.InterfacesRepositorio;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,12 +34,16 @@ namespace LogicaAccesoDatos.Repositorio
 
         public Envio? GetById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Envios.Include(e => e.Cliente).Include(e => e.Empleado).FirstOrDefault(e => e.Id == id);
         }
 
         public void Update(Envio entity)
         {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(entity);
+            Envio envio = GetById(entity.Id) ?? throw new EnvioException("El envio a actualizar no existe.");
+            _context.Entry(envio).State = EntityState.Detached;
+            _context.Envios.Update(entity);
+            _context.SaveChanges();
         }
     }
 }

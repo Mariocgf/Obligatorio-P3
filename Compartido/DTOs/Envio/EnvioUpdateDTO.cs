@@ -9,7 +9,7 @@ namespace Compartido.DTOs.Envio
     public class EnvioUpdateDTO
     {
         public int Id { get; set; }
-        public string NumTracking { get; set; }
+        public string NroTracking { get; set; }
         public string Estado { get; set; }
     }
 }

@@ -2,7 +2,6 @@
 using Compartido.Mappers;
 using LogicaAplicacion.InterfacesCasosUso.EnvioCU;
 using LogicaNegocio.Entidades;
-using LogicaNegocio.ExepcionesEntidades;
 using LogicaNegocio.InterfacesRepositorio;
 using System;
 using System.Collections.Generic;
@@ -12,22 +11,17 @@ using System.Threading.Tasks;
 
 namespace LogicaAplicacion.CasosUso.EnvioCU
 {
-    public class UpdateEnvio : IUpdateEnvio
+    public class FinalizarEnvioComun : IFinalizarEnvioComun
     {
-        private readonly IRepositorioEnvio _repoEnvio;
-        public UpdateEnvio(IRepositorioEnvio repoEnvio)
+        private readonly IRepositorioEnvioComun _repoEnvio;
+        public FinalizarEnvioComun(IRepositorioEnvioComun repoEnvio)
         {
             _repoEnvio = repoEnvio;
         }
         public void Ejecutar(EnvioUpdateDTO envioDto)
         {
             ArgumentNullException.ThrowIfNull(envioDto);
-            Envio envio = _repoEnvio.GetById(envioDto.Id) ?? throw new EnvioException("Envio no encontrado.");
-            Estados estado;
-            Enum.TryParse(envioDto.Estado, ignoreCase: true, out estado);
-            envio.Estado = estado;
-            envio.FechaEntrega = DateTime.Now;
-            _repoEnvio.Update(envio);
+            
         }
     }
 }

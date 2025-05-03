@@ -1,0 +1,77 @@
+﻿@model MVC.Models.Envio.EnvioDetalleViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>EnvioDetalleViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <p>@Model.Id</p>
+                <input asp-for="Id" class="form-control" style="display: none"/>
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NroTracking" class="control-label"></label>
+                <p>@Model.NroTracking</p>
+                <input asp-for="NroTracking" class="form-control" style="display:none" />
+                <span asp-validation-for="NroTracking" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Empleado" class="control-label"></label>
+                <p>@Model.Empleado</p>
+                <input asp-for="Empleado" class="form-control" style="display: none"/>
+                <span asp-validation-for="Empleado" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cliente" class="control-label"></label>
+                <p>@Model.Cliente</p>
+                <input asp-for="Cliente" class="form-control" style="display: none"/>
+                <span asp-validation-for="Cliente" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Peso" class="control-label"></label>
+                <p>@Model.Peso</p>
+                <input asp-for="Peso" class="form-control" style="display: none"/>
+                <span asp-validation-for="Peso" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Estado" class="control-label"></label>
+                <select asp-for="Estado" class="form-control">
+                    <option value="">Seleccione agencia</option>
+                    @foreach (var estado in Model.Estados)
+                    {
+                        <option value="@estado">@estado</option>
+                    }
+                </select>
+                <span asp-validation-for="Estado" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TipoEnvio" class="control-label"></label>
+                <p>@Model.TipoEnvio</p>
+                <input asp-for="TipoEnvio" class="form-control" style="display: none"/>
+                <span asp-validation-for="TipoEnvio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <p>@ViewBag.Msg</p>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

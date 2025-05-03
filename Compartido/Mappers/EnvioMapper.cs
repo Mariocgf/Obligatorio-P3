@@ -30,6 +30,24 @@ namespace Compartido.Mappers
                 Estado = e.Estado.ToString(),
                 TipoEnvio = e is Comun ? "Comun" : "Urgente",
             }).ToList();
+        }
+        public static EnvioDetalleDto EnvioTOEnvioDetalleDTO(Envio envio)
+        {
+            List<string> estados = [.. Enum.GetNames(typeof(Estados))];
+            
+            return new EnvioDetalleDto
+            {
+                Id = envio.Id,
+                NroTracking = envio.NroTracking,
+                Empleado = $"{envio.Empleado.Nombre} {envio.Empleado.Apellido}",
+                Cliente = $"{envio.Cliente.Nombre} {envio.Cliente.Apellido}",
+                Peso = envio.Peso,
+                Estado = envio.Estado.ToString(),
+                TipoEnvio = envio is Comun ? "Comun" : "Urgente",
+                FechaCreacion = envio.FechaCreacion,
+                FechaEntrega = envio.FechaEntrega,
+                Estados = estados
+            };
+        }
     }
-}
 }
