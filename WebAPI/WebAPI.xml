@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebAPI</name>
+    </assembly>
+    <members>
+        <member name="M:WebAPI.Controllers.EnvioController.Get(System.String)">
+            <summary>
+            Permite consultar un envio por su numero de tracking.
+            </summary>
+            <param name="nroTracking"> Numero de tracking del envio a consultar.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

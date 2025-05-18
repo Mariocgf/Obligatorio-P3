@@ -9,6 +9,6 @@ namespace LogicaAplicacion.InterfacesCasosUso
 {
     public interface IListarRoles
     {
-        List<RolDetallesDTO> Ejecutar();
+        List<InfoSelectDTO> Ejecutar();
     }
 }

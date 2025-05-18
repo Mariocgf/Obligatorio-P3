@@ -34,7 +34,7 @@ namespace Compartido.Mappers
         public static EnvioDetalleDto EnvioTOEnvioDetalleDTO(Envio envio)
         {
             List<string> estados = [.. Enum.GetNames(typeof(Estados))];
-            
+
             return new EnvioDetalleDto
             {
                 Id = envio.Id,
@@ -48,6 +48,28 @@ namespace Compartido.Mappers
                 FechaEntrega = envio.FechaEntrega,
                 Estados = estados
             };
+        }
+
+        public static EnvioAPInfoDto EnvioToEnvioAPInfoDto(Envio envio)
+        {
+            EnvioAPInfoDto envioAPInfoDto = new EnvioAPInfoDto
+            {
+                NroTracking = envio.NroTracking,
+                Peso = envio.Peso,
+                Estado = envio.Estado.ToString(),
+                Comentario = envio.ListaSeguimiento.LastOrDefault()?.Comentario
+            };
+            if (envio is Comun comun)
+            {
+                envioAPInfoDto.TipoEnvio = "Comun";
+                envioAPInfoDto.InfoAdicional = comun.AgenciaDestino.Nombre;
+            }
+            else
+            {
+                envioAPInfoDto.TipoEnvio = "Urgente";
+                envioAPInfoDto.InfoAdicional = ((Urgente)envio).Direccion;
+            }
+            return envioAPInfoDto;
         }
     }
 }

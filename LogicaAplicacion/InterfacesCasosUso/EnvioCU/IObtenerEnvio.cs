@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace LogicaAplicacion.InterfacesCasosUso.EnvioCU
 {
-    public interface IFinalizarEnvioComun
+    public interface IObtenerEnvio
     {
-        void Ejecutar(EnvioUpdateDTO envioDto);
+        EnvioAPInfoDto Ejecutar(string nroTracking);
     }
 }

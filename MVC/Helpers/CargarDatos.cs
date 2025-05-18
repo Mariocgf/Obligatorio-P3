@@ -14,7 +14,7 @@ namespace MVC.Helpers
     {
         public static void RolesSelect(FuncionarioViewModel funcionarioVM, IListarRoles listaRoles)
         {
-            List<RolDetallesDTO> listaRolDTO = listaRoles.Ejecutar();
+            List<InfoSelectDTO> listaRolDTO = listaRoles.Ejecutar();
             funcionarioVM.Roles = listaRolDTO.Select(r => new RolViewModel()
             {
                 Id = r.Id,
@@ -23,7 +23,7 @@ namespace MVC.Helpers
         }
         public static void RolesSelect(FuncionarioUpdateViewModel funcionarioVM, IListarRoles listaRoles)
         {
-            List<RolDetallesDTO> listaRolDTO = listaRoles.Ejecutar();
+            List<InfoSelectDTO> listaRolDTO = listaRoles.Ejecutar();
             funcionarioVM.Roles = listaRolDTO.Select(r => new RolViewModel()
             {
                 Id = r.Id,

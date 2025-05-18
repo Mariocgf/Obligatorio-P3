@@ -23,6 +23,7 @@ namespace LogicaAccesoDatos
             modelBuilder.Entity<Envio>().UseTptMappingStrategy();
             modelBuilder.Entity<Envio>().Property(e => e.Peso).HasPrecision(5, 2);
             modelBuilder.Entity<Auditoria>().HasOne(a => a.Empleado).WithMany().OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Seguimiento>().HasOne(s => s.Empleado).WithMany().OnDelete(DeleteBehavior.NoAction);
             base.OnModelCreating(modelBuilder);
         }
     }

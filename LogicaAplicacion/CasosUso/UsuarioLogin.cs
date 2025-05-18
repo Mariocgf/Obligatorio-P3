@@ -22,14 +22,9 @@ namespace LogicaAplicacion.CasosUso
         public UsuarioLoggedDTO Login(string email, string password)
         {
             Usuario? usuario = _repoUsuario.GetByEmail(email);
-            if(usuario == null)
-            {
-                throw new UsuarioException("Usuario no registrado");
-            }
-            if (usuario.Password.Value != password)
-            {
-                throw new UsuarioException("Contraseña incorrecta");
-            }
+            if(usuario == null && usuario.Password.Value != password)
+                throw new UsuarioException("Credenciales invalidas");
+            
             Rol rol = _repoRol.GetById(usuario.RolId) ?? throw new RolException("El rol no existe.");
             if (rol.Nombre == "Cliente")
                 throw new UsuarioException("El cliente no tiene permisos para acceder a esta funcionalidad.");

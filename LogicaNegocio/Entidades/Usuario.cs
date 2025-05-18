@@ -1,4 +1,5 @@
-﻿using LogicaNegocio.ValueObject;
+﻿using LogicaNegocio.ExepcionesEntidades;
+using LogicaNegocio.ValueObject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,9 +29,31 @@ namespace LogicaNegocio.Entidades
             Password = new Password(password);
             Rol = rol;
             RolId = rol.Id;
+            Validate();
+            FormatearCedula();
         }
         public Usuario() { }
-
+        public void Validate()
+        {
+            if(string.IsNullOrEmpty(CI))
+                throw new UsuarioException("CI no puede estar vacío");
+            if(CI.Length != 8)
+                throw new UsuarioException("CI debe tener 8 dígitos");
+        }
+        public void FormatearCedula()
+        {
+            string cedula = $"{CI[0]}.";
+            for (int i = 1; i < CI.Length; i++)
+            {
+                if (i == 3)
+                    cedula += $"{CI[i]}.";
+                else if (i == 6)
+                    cedula += $"{CI[i]}-";
+                else
+                    cedula += CI[i];
+            }
+            CI = cedula;
+        }
         public bool Equals(Usuario? other)
         {
             return Email.Equals(other?.Email);

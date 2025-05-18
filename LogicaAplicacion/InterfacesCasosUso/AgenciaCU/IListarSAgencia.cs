@@ -1,9 +1,9 @@
-﻿using Compartido.DTOs.Agencia;
+﻿using Compartido.DTOs;
 
 namespace LogicaAplicacion.InterfacesCasosUso.AgenciaCU
 {
     public interface IListarSAgencia
     {
-        List<AgenciaSelectDTO> Ejecutar();
+        List<InfoSelectDTO> Ejecutar();
     }
 }

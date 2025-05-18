@@ -8,14 +8,16 @@ namespace LogicaNegocio.Entidades
 {
     public class Seguimiento
     {
+        public int Id { get; set; }
         public string Comentario { get; set; }
         public Usuario Empleado { get; set; }
         public DateTime Fecha { get; set; }
-        public Seguimiento(string comentario, Usuario empleado, DateTime fecha)
+        public Seguimiento(string comentario, Usuario empleado)
         {
             Comentario = comentario;
             Empleado = empleado;
-            Fecha = fecha;
+            Fecha = DateTime.Now;
         }
+        private Seguimiento() { }
     }
 }

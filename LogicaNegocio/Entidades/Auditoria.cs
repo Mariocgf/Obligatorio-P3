@@ -13,6 +13,6 @@ namespace LogicaNegocio.Entidades
             Fecha = DateTime.Now;
             Empleado = empleado;
         }
-        public Auditoria() { }
+        private Auditoria() { }
     }
 }

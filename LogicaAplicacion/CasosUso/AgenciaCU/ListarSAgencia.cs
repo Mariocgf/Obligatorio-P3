@@ -1,4 +1,5 @@
-﻿using Compartido.DTOs.Agencia;
+﻿using Compartido.DTOs;
+using Compartido.DTOs.Agencia;
 using Compartido.Mappers;
 using LogicaAplicacion.InterfacesCasosUso.AgenciaCU;
 using LogicaNegocio.Entidades;
@@ -19,10 +20,10 @@ namespace LogicaAplicacion.CasosUso.AgenciaCU
             _repoAgencia = repoAgencia;
         }
 
-        public List<AgenciaSelectDTO> Ejecutar()
+        public List<InfoSelectDTO> Ejecutar()
         {
             List<Agencia> agencias = _repoAgencia.GetAll().ToList();
-            return AgenciaMapper.AgenciaToAgenciaSelectDTO(agencias);
+            return AgenciaMapper.AgenciaToInfoSelectDTO(agencias);
         }
     }
 }

@@ -11,9 +11,9 @@ namespace Compartido.Mappers
 {
     public class RolMapper
     {
-        public static List<RolDetallesDTO> RolToRolDetallesDTO(List<Rol> roles)
+        public static List<InfoSelectDTO> RolToRolDetallesDTO(List<Rol> roles)
         {
-            return roles.Select(rol => new RolDetallesDTO()
+            return roles.Select(rol => new InfoSelectDTO()
             {
                 Id = rol.Id,
                 Nombre = rol.Nombre

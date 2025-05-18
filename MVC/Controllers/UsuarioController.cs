@@ -129,6 +129,13 @@ namespace MVC.Controllers
             }
             return View();
         }
+        // GET: UsuarioController/Logout
+        [HttpGet]
+        public ActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
 
         // GET: UsuarioController/Create
         [Admin]
@@ -187,7 +194,7 @@ namespace MVC.Controllers
         {
             try
             {
-                List<RolDetallesDTO> listaRolDTO = _listarRoles.Ejecutar();
+                List<InfoSelectDTO> listaRolDTO = _listarRoles.Ejecutar();
                 funcionarioVM.Roles = listaRolDTO.Select(r => new RolViewModel()
                 {
                     Id = r.Id,

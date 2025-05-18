@@ -9,6 +9,7 @@ using MVC.Models.Envio;
 using MVC.Filter;
 using LogicaAplicacion.InterfacesCasosUso.UsuarioCU;
 using LogicaNegocio.ExepcionesEntidades;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace MVC.Controllers
 {
@@ -21,10 +22,11 @@ namespace MVC.Controllers
         private readonly IListarSelectUsuario _listarSUsuario;
         private readonly IDetalleEnvio _detalleEnvio;
         private readonly IUpdateEnvio _updateEnvio;
+        private readonly IAgregarComentario _agregarComentario;
         public EnvioController(IAltaEnvioUrgente altaEnvioUrgente, IAltaEnvioComun altaEnvioComun,
                                IListarSAgencia listarSAgencia, IListarEnvios listarEnvios,
                                IListarSelectUsuario listarSUsuario, IDetalleEnvio detalleEnvio,
-                               IUpdateEnvio updateEnvio)
+                               IUpdateEnvio updateEnvio, IAgregarComentario agregarComentario)
         {
             _altaEnvioUrgente = altaEnvioUrgente;
             _altaEnvioComun = altaEnvioComun;
@@ -33,6 +35,7 @@ namespace MVC.Controllers
             _listarSUsuario = listarSUsuario;
             _detalleEnvio = detalleEnvio;
             _updateEnvio = updateEnvio;
+            _agregarComentario = agregarComentario;
         }
         // GET: EnvioController
         [Funcionarios]
@@ -97,8 +100,7 @@ namespace MVC.Controllers
             {
                 CargarDatos.AgenciaSelect(envioVM, _listarSAgencia);
                 CargarDatos.UsuarioSelect(envioVM, _listarSUsuario);
-                if (!ModelState.IsValid)
-                    throw new ArgumentException("Datos invalidos");
+                
                 int idFuncionario = HttpContext.Session.GetInt32("Id").Value;
                 if (envioVM.EsUrgente)
                 {
@@ -218,6 +220,28 @@ namespace MVC.Controllers
             {
                 return View();
             }
+        }
+
+        public ActionResult Comentar(int id)
+        {
+            ComentarioViewModel comentarioVM = new ComentarioViewModel();
+            comentarioVM.IdEnvio = id;
+            comentarioVM.IdEmpleado = HttpContext.Session.GetInt32("Id").Value;
+            return View(comentarioVM);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Comentar(ComentarioViewModel comentarioVM)
+        {
+            try
+            {
+                _agregarComentario.Ejecutar(comentarioVM.IdEnvio, comentarioVM.IdEmpleado, comentarioVM.Comentario);
+            }
+            catch (Exception e)
+            {
+                ViewBag.Msg = e.Message;
+            }
+            return View();
         }
     }
 }

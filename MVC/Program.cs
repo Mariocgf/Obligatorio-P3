@@ -48,6 +48,7 @@ namespace MVC
             //Role
             builder.Services.AddScoped<IListarRoles, ListarRoles>();
             //Envio
+            builder.Services.AddScoped<IAgregarComentario, AgregarComentario>();
             builder.Services.AddScoped<IAltaEnvioUrgente, AltaEnvioUrgente>();
             builder.Services.AddScoped<IAltaEnvioComun, AltaEnvioComun>();
             builder.Services.AddScoped<IListarEnvios, ListarEnvios>();

@@ -1,5 +1,4 @@
-﻿
-namespace Compartido.DTOs.Envio
+﻿namespace Compartido.DTOs.Envio
 {
     public class EnvioDTO
     {
@@ -10,9 +9,3 @@ namespace Compartido.DTOs.Envio
         public decimal Peso { get; set; }
     }
 }
-//El empleado ingresará:
-//el tipo de envío
-//el email del cliente
-//la agencia de destino o la dirección postal,
-//y el peso.
-//El envío quedará guardado con los demás valores por defecto. 
