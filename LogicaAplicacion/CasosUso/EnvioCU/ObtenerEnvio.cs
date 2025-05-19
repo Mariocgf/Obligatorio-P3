@@ -15,9 +15,9 @@ namespace LogicaAplicacion.CasosUso.EnvioCU
     public class ObtenerEnvio : IObtenerEnvio
     {
         private readonly IRepositorioEnvio _repoEnvio;
-        public ObtenerEnvio(IRepositorioEnvio repositorioEnvio)
+        public ObtenerEnvio(IRepositorioEnvio repoEnvio)
         {
-            _repoEnvio = repositorioEnvio;
+            _repoEnvio = repoEnvio;
         }
         public EnvioAPInfoDto Ejecutar(string nroTracking)
         {

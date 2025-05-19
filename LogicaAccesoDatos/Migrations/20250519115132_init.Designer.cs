@@ -13,8 +13,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LogicaAccesoDatos.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250411233524_Auditoria")]
-    partial class Auditoria
+    [Migration("20250519115132_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,6 +100,12 @@ namespace LogicaAccesoDatos.Migrations
                     b.Property<int>("Estado")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaEntrega")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("NroTracking")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -134,6 +140,36 @@ namespace LogicaAccesoDatos.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("LogicaNegocio.Entidades.Seguimiento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comentario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmpleadoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EnvioId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmpleadoId");
+
+                    b.HasIndex("EnvioId");
+
+                    b.ToTable("Seguimiento");
                 });
 
             modelBuilder.Entity("LogicaNegocio.Entidades.Usuario", b =>
@@ -211,9 +247,6 @@ namespace LogicaAccesoDatos.Migrations
                     b.Property<bool>("EntregadoEficiente")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("FechaEntrega")
-                        .HasColumnType("datetime2");
-
                     b.ToTable("EnvioUrgente");
                 });
 
@@ -243,6 +276,21 @@ namespace LogicaAccesoDatos.Migrations
                         .IsRequired();
 
                     b.Navigation("Cliente");
+
+                    b.Navigation("Empleado");
+                });
+
+            modelBuilder.Entity("LogicaNegocio.Entidades.Seguimiento", b =>
+                {
+                    b.HasOne("LogicaNegocio.Entidades.Usuario", "Empleado")
+                        .WithMany()
+                        .HasForeignKey("EmpleadoId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("LogicaNegocio.Entidades.Envio", null)
+                        .WithMany("ListaSeguimiento")
+                        .HasForeignKey("EnvioId");
 
                     b.Navigation("Empleado");
                 });
@@ -282,6 +330,11 @@ namespace LogicaAccesoDatos.Migrations
                         .HasForeignKey("LogicaNegocio.Entidades.Urgente", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("LogicaNegocio.Entidades.Envio", b =>
+                {
+                    b.Navigation("ListaSeguimiento");
                 });
 #pragma warning restore 612, 618
         }

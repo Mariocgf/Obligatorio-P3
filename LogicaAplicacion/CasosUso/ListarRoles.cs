@@ -18,7 +18,7 @@ namespace LogicaAplicacion.CasosUso
         {
             _repoRol = repoRol;
         }
-        public List<RolDetallesDTO> Ejecutar()
+        public List<InfoSelectDTO> Ejecutar()
         {
             List<Rol> roles = _repoRol.GetAll().ToList();
             return RolMapper.RolToRolDetallesDTO(roles);

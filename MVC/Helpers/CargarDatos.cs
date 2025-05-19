@@ -32,7 +32,7 @@ namespace MVC.Helpers
         }
         public static void AgenciaSelect(EnvioCreateViewModel envioVM, IListarSAgencia listaSAgencia)
         {
-            List<AgenciaSelectDTO> listaAgenciaDTO = listaSAgencia.Ejecutar();
+            List<InfoSelectDTO> listaAgenciaDTO = listaSAgencia.Ejecutar();
             envioVM.Agencias = listaAgenciaDTO.Select(r => new AgenciaSelectViewModel()
             {
                 Id = r.Id,
