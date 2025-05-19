@@ -51,23 +51,5 @@ namespace WebAPI.Controllers
                 return StatusCode(500, "Error interno :(");
             }
         }
-
-        // POST api/<EnvioController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<EnvioController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<EnvioController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

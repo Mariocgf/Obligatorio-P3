@@ -45,5 +45,11 @@ namespace LogicaNegocio.Entidades
                 throw new EnvioException("El cliente no puede ser nulo");
         }
         public Envio() { }
+
+        public virtual void FinalizarEnvio()
+        {
+            FechaEntrega = DateTime.Now;
+            Estado = Estados.FINALIZADO;
+        }
     }
 }

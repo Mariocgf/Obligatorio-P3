@@ -17,5 +17,13 @@ namespace LogicaNegocio.Entidades
             Direccion = direccion;
         }
         private Urgente() { }
+
+        public override void FinalizarEnvio()
+        {
+            base.FinalizarEnvio();
+            TimeSpan timeSpan = DateTime.Now - FechaCreacion;
+            if (timeSpan.TotalHours < 24)
+                EntregadoEficiente = true;
+        }
     }
 }

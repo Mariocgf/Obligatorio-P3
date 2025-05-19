@@ -171,7 +171,7 @@ namespace MVC.Controllers
         // POST: EnvioController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EnvioDetalleDto envioVM)
+        public ActionResult Edit(EnvioDetalleViewModel envioVM)
         {
             try
             {
@@ -179,9 +179,7 @@ namespace MVC.Controllers
                     throw new ArgumentException("Datos invalidos");
                 EnvioUpdateDTO envioUDto = new EnvioUpdateDTO
                 {
-                    Id = envioVM.Id,
-                    NroTracking = envioVM.NroTracking,
-                    Estado = envioVM.Estado
+                    Id = envioVM.Id
                 };
                 _updateEnvio.Ejecutar(envioUDto);
                 return RedirectToAction(nameof(Index));
@@ -201,26 +199,7 @@ namespace MVC.Controllers
             return View();
         }
 
-        // GET: EnvioController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
 
-        // POST: EnvioController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
         public ActionResult Comentar(int id)
         {

@@ -23,20 +23,8 @@ namespace LogicaAplicacion.CasosUso.EnvioCU
         {
             ArgumentNullException.ThrowIfNull(envioDto);
             Envio envio = _repoEnvio.GetById(envioDto.Id) ?? throw new EnvioException("Envio no encontrado.");
-            Estados estado;
-            Enum.TryParse(envioDto.Estado, ignoreCase: true, out estado);
-            envio.Estado = estado;
-            envio.FechaEntrega = DateTime.Now;
-            if (envio is Urgente envioU)
-            {
-                TimeSpan timeSpan = DateTime.Now - envioU.FechaCreacion;
-                if (timeSpan.TotalHours < 24)
-                    envioU.EntregadoEficiente = true;
-
-                _repoEnvio.Update(envioU);
-            }else
-                _repoEnvio.Update(envio);
-
+            envio.FinalizarEnvio();
+            _repoEnvio.Update(envio);
         }
     }
 }

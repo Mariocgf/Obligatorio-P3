@@ -14,11 +14,13 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="IdEnvio" class="control-label"></label>
+                <p>@Model.IdEnvio</p>
                 <input asp-for="IdEnvio" class="form-control" style="display: none;"/>
                 <span asp-validation-for="IdEnvio" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdEmpleado" class="control-label"></label>
+                <p>@Model.IdEmpleado</p>
                 <input asp-for="IdEmpleado" class="form-control" style="display: none;" />
                 <span asp-validation-for="IdEmpleado" class="text-danger"></span>
             </div>

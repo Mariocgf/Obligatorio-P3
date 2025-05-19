@@ -16,5 +16,10 @@ namespace LogicaNegocio.Entidades
             AgenciaDestino = agenciaDestino;
         }
         private Comun() { }
+
+        public override void FinalizarEnvio()
+        {
+            base.FinalizarEnvio();
+        }
     }
 }
