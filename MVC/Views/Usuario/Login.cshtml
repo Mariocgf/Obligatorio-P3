@@ -22,17 +22,20 @@
                 <input asp-for="Password" class="form-control" type="password"/>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <input type="submit" value="Login" class="btn btn-primary" />
             </div>
         </form>
-        <p>@ViewBag.Msg</p>
+        @if (!String.IsNullOrEmpty(ViewBag.Msg))
+        {
+            <div class="alert alert-danger mt-3" role="alert">
+                @ViewBag.Msg
+            </div>
+        }
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

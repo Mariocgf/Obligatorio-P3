@@ -1,0 +1,34 @@
+﻿@model IEnumerable<MVC.Models.Envio.SeguimientoEnvioViewModel>
+
+@{
+    ViewData["Title"] = "Seguimientos";
+}
+
+<h1>Seguimientos</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Comentario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comentario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

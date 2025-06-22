@@ -1,21 +1,53 @@
 using Microsoft.AspNetCore.Mvc;
+using MVC.Helpers;
 using MVC.Models;
+using MVC.Models.Envio;
+using Newtonsoft.Json;
 using System.Diagnostics;
+
 
 namespace MVC.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly Conexion _conexion;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, Conexion conexion)
         {
+            _conexion = conexion;
             _logger = logger;
         }
-
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            EnvioDetalleViewModel envioVM = new EnvioDetalleViewModel();
+            return View(envioVM);
+        }
+        [HttpPost]
+        public IActionResult Index(string nroTracking)
+        {
+            EnvioDetalleViewModel envioVM = new EnvioDetalleViewModel();
+            try
+            {
+                if (!String.IsNullOrEmpty(nroTracking))
+                {
+                    var (IsSuccessStatusCode, datos) = _conexion.Start($"envio/{nroTracking}", "GET");
+                    if (IsSuccessStatusCode)
+                        envioVM = JsonConvert.DeserializeObject<EnvioDetalleViewModel>(datos);
+                    else
+                        ViewBag.Msg = datos;
+                }
+                else
+                {
+                    ViewBag.Msg = "Ingrese un numero de tracking valido.";
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Msg("Error");
+            }
+            return View(envioVM);
         }
 
         public IActionResult Privacy()

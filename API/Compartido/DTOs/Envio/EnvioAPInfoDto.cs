@@ -1,12 +1,12 @@
-﻿namespace MVC.Models.Envio
+﻿namespace Compartido.DTOs.Envio
 {
-    public class EnvioDetalleViewModel
+    public class EnvioAPInfoDto
     {
         public string NroTracking { get; set; }
         public string Estado { get; set; }
         public decimal Peso { get; set; }
         public string TipoEnvio { get; set; }
         public string InfoAdicional { get; set; }
-        public List<SeguimientoEnvioViewModel> Comentarios { get; set; }
-    }
+        public List<SeguimientoEnvioDto> Comentarios { get; set; }
+}
 }

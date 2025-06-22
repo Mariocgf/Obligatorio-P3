@@ -1,226 +1,121 @@
-﻿using Compartido.DTOs.Envio;
-using LogicaAplicacion.InterfacesCasosUso.AgenciaCU;
-using LogicaAplicacion.InterfacesCasosUso.EnvioCU;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MVC.Helpers;
-using MVC.Models;
 using MVC.Models.Envio;
-using MVC.Filter;
-using LogicaAplicacion.InterfacesCasosUso.UsuarioCU;
-using LogicaNegocio.ExepcionesEntidades;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json;
 
 namespace MVC.Controllers
 {
     public class EnvioController : Controller
     {
-        private readonly IAltaEnvioUrgente _altaEnvioUrgente;
-        private readonly IAltaEnvioComun _altaEnvioComun;
-        private readonly IListarSAgencia _listarSAgencia;
-        private readonly IListarEnvios _listarEnvios;
-        private readonly IListarSelectUsuario _listarSUsuario;
-        private readonly IDetalleEnvio _detalleEnvio;
-        private readonly IUpdateEnvio _updateEnvio;
-        private readonly IAgregarComentario _agregarComentario;
-        public EnvioController(IAltaEnvioUrgente altaEnvioUrgente, IAltaEnvioComun altaEnvioComun,
-                               IListarSAgencia listarSAgencia, IListarEnvios listarEnvios,
-                               IListarSelectUsuario listarSUsuario, IDetalleEnvio detalleEnvio,
-                               IUpdateEnvio updateEnvio, IAgregarComentario agregarComentario)
+        private readonly Conexion _conexion;
+        public EnvioController(Conexion conexion)
         {
-            _altaEnvioUrgente = altaEnvioUrgente;
-            _altaEnvioComun = altaEnvioComun;
-            _listarSAgencia = listarSAgencia;
-            _listarEnvios = listarEnvios;
-            _listarSUsuario = listarSUsuario;
-            _detalleEnvio = detalleEnvio;
-            _updateEnvio = updateEnvio;
-            _agregarComentario = agregarComentario;
+            _conexion = conexion;
         }
-        // GET: EnvioController
-        [Funcionarios]
-        [IsAuthenticated]
-        public ActionResult Index()
+        [HttpGet]
+        public IActionResult Index()
         {
             List<EnvioListadoViewModel> enviosVM = new List<EnvioListadoViewModel>();
             try
             {
-                List<EnvioListadoDTO> envios = _listarEnvios.Ejecutar();
-                enviosVM = envios.Select(e => new EnvioListadoViewModel
+                int idUser = (int)HttpContext.Session.GetInt32("Id");
+                string token = HttpContext.Session.GetString("Token");
+                var (IsSuccessStatusCode, datos) = _conexion.Start($"envio/usuario/{idUser}", "GET", token);
+                if (IsSuccessStatusCode)
                 {
-                    Id = e.Id,
-                    NroTracking = e.NroTracking,
-                    Empleado = e.Empleado,
-                    Cliente = e.Cliente,
-                    Peso = e.Peso,
-                    Estado = e.Estado,
-                    TipoEnvio = e.TipoEnvio,
-                }).ToList();
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Msg = ex.Message;
-            }
-            return View(enviosVM);
-        }
-
-        // GET: EnvioController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-        [Funcionarios]
-        [IsAuthenticated]
-        // GET: EnvioController/Create
-        public ActionResult Create()
-        {
-            EnvioCreateViewModel envioVM = new EnvioCreateViewModel();
-            try
-            {
-                CargarDatos.AgenciaSelect(envioVM, _listarSAgencia);
-                CargarDatos.UsuarioSelect(envioVM, _listarSUsuario);
-            }
-            catch (Exception)
-            {
-
-                ViewBag.Msg = "Error al cargar las agencias";
-            }
-            return View(envioVM);
-        }
-
-        // POST: EnvioController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Funcionarios]
-        [IsAuthenticated]
-        public ActionResult Create(EnvioCreateViewModel envioVM)
-        {
-
-            try
-            {
-                CargarDatos.AgenciaSelect(envioVM, _listarSAgencia);
-                CargarDatos.UsuarioSelect(envioVM, _listarSUsuario);
-                
-                int idFuncionario = HttpContext.Session.GetInt32("Id").Value;
-                if (envioVM.EsUrgente)
-                {
-                    EnvioUrgenteDTO envioUDto = new EnvioUrgenteDTO
-                    {
-                        EsUrgente = envioVM.EsUrgente,
-                        ClienteId = envioVM.EmailCliente,
-                        DireccionPostal = envioVM.DireccionPostal,
-                        Peso = envioVM.Peso
-                    };
-                    _altaEnvioUrgente.Ejecutar(envioUDto, idFuncionario);
+                    enviosVM = JsonConvert.DeserializeObject<List<EnvioListadoViewModel>>(datos);
                 }
                 else
                 {
-                    EnvioComunDTO envioCDto = new EnvioComunDTO
-                    {
-                        AgenciaId = envioVM.AgenciaId,
-                        ClienteId = envioVM.EmailCliente,
-                        Peso = envioVM.Peso
-                    };
-                    _altaEnvioComun.Ejecutar(envioCDto, idFuncionario);
+                    ViewBag.Msg = datos;
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            catch (ArgumentException ex)
-            {
-                ViewBag.Msg = ex.Message;
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Msg = ex.Message;
-            }
-            return View(envioVM);
-        }
-
-        // GET: EnvioController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            EnvioDetalleViewModel envioVM = new EnvioDetalleViewModel();
-            try
-            {
-                EnvioDetalleDto envioDto = _detalleEnvio.Ejecutar(id);
-                envioVM = new EnvioDetalleViewModel
-                {
-                    Id = envioDto.Id,
-                    NroTracking = envioDto.NroTracking,
-                    Empleado = envioDto.Empleado,
-                    Cliente = envioDto.Cliente,
-                    Peso = envioDto.Peso,
-                    Estado = envioDto.Estado,
-                    TipoEnvio = envioDto.TipoEnvio,
-                    FechaCreacion = envioDto.FechaCreacion,
-                    FechaEntrega = envioDto.FechaEntrega,
-                    Estados = envioDto.Estados
-                };
-            }
-            catch (EnvioException e)
-            {
-                ViewBag.Msg = e.Message;
             }
             catch (Exception)
             {
-                ViewBag.Msg = "Error al cargar el envio";
+                ViewBag.Msg = "Error al obtener los envíos.";
             }
-            return View(envioVM);
+            return View(enviosVM);
         }
-
-        // POST: EnvioController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(EnvioDetalleViewModel envioVM)
+        [HttpGet]
+        public IActionResult Seguimientos(int idEnvio)
         {
+            List<SeguimientoEnvioViewModel> seguimientosVM = new List<SeguimientoEnvioViewModel>();
             try
             {
-                if (!ModelState.IsValid)
-                    throw new ArgumentException("Datos invalidos");
-                EnvioUpdateDTO envioUDto = new EnvioUpdateDTO
+                if (idEnvio > 0)
                 {
-                    Id = envioVM.Id
-                };
-                _updateEnvio.Ejecutar(envioUDto);
-                return RedirectToAction(nameof(Index));
-            }
-            catch (EnvioException e)
-            {
-                ViewBag.Msg = e.Message;
-            }
-            catch (ArgumentException)
-            {
-                ViewBag.Msg = "Valores vacios";
+                    string token = HttpContext.Session.GetString("Token");
+                    var (IsSuccessStatusCode, datos) = _conexion.Start($"envio/seguimientos/{idEnvio}", "GET", token);
+                    if (IsSuccessStatusCode)
+                    {
+                        seguimientosVM = JsonConvert.DeserializeObject<List<SeguimientoEnvioViewModel>>(datos);
+                    }
+                }
             }
             catch (Exception)
             {
-                ViewBag.Msg = "Error al cargar el envio";
+                ViewBag.Msg = "Error.";
             }
-            return View();
+            return View(seguimientosVM);
         }
-
-
-
-        public ActionResult Comentar(int id)
+        [HttpGet]
+        public IActionResult Buscar()
         {
-            ComentarioViewModel comentarioVM = new ComentarioViewModel();
-            comentarioVM.IdEnvio = id;
-            comentarioVM.IdEmpleado = HttpContext.Session.GetInt32("Id").Value;
-            return View(comentarioVM);
+            List<EnvioListadoViewModel> enviosVM = new List<EnvioListadoViewModel>();
+            return View(enviosVM);
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Comentar(ComentarioViewModel comentarioVM)
+        public IActionResult BuscarXFecha(BuscarEnvioFechaViewModel vm)
         {
+            List<EnvioListadoViewModel> enviosVM = new List<EnvioListadoViewModel>();
             try
             {
-                _agregarComentario.Ejecutar(comentarioVM.IdEnvio, comentarioVM.IdEmpleado, comentarioVM.Comentario);
+                vm.IdUser = (int)HttpContext.Session.GetInt32("Id");
+                string token = HttpContext.Session.GetString("Token");
+
+                if (ModelState.IsValid)
+                {
+                    string query = query = $"?IdUser={vm.IdUser}&FechaDesde={vm.FechaDesde.ToString("yyyy-MM-dd")}&FechaHasta={vm.FechaHasta.ToString("yyyy-MM-dd")}&Estado={vm.Estado}";
+                    var (IsSuccessStatusCode, datos) = _conexion.Start($"envio/fecha{query}", "GET", token);
+                    if (IsSuccessStatusCode)
+                        enviosVM = JsonConvert.DeserializeObject<List<EnvioListadoViewModel>>(datos);
+                    else
+                        ViewBag.Msg = datos;
+                }
+                else
+                    ViewBag.Msg = "Por favor, complete todos los campos requeridos.";
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                ViewBag.Msg = e.Message;
+                ViewBag.Msg = "Error.";
             }
-            return View();
+            return View("Buscar", enviosVM);
+        }
+        [HttpPost]
+        public IActionResult BuscarXComentario(BuscarEnvioComentarioViewModel vm)
+        {
+            List<EnvioListadoViewModel> enviosVM = new List<EnvioListadoViewModel>();
+            try
+            {
+                vm.IdUser = (int)HttpContext.Session.GetInt32("Id");
+                string token = HttpContext.Session.GetString("Token");
+                if (ModelState.IsValid)
+                {
+                    string query = $"?IdUser={vm.IdUser}&Comentario={vm.Comentario}";
+                    var (IsSuccessStatusCode, datos) = _conexion.Start($"envio/comentario{query}", "GET", token);
+                    if (IsSuccessStatusCode)
+                        enviosVM = JsonConvert.DeserializeObject<List<EnvioListadoViewModel>>(datos);
+                    else
+                        ViewBag.Msg = datos;
+                }
+                else
+                    ViewBag.Msg = "Por favor, complete todos los campos requeridos.";
+            }
+            catch (Exception)
+            {
+                ViewBag.Msg = "Error.";
+            }
+            return View("Buscar",enviosVM);
         }
     }
 }
