@@ -22,7 +22,7 @@ namespace LogicaAplicacion.CasosUso
         public UsuarioLoggedDTO Login(LoginDTO loginDto)
         {
             Usuario? usuario = _repoUsuario.GetByEmail(loginDto.email) ?? throw new UsuarioException("Credenciales invalidas");
-            Rol rol = _repoRol.GetById(usuario.RolId) ?? throw new RolException("El rol no existe.");
+            Rol rol = _repoRol.GetById(usuario.RolId);
             return UsuarioMapper.UsuarioTOUsurioLoggedDTO(usuario, rol);
         }
     }

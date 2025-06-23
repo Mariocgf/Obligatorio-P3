@@ -18,18 +18,8 @@ namespace LogicaNegocio.ValueObject
         {
             Latitud = latitud;
             Longitud = longitud;
-            Validate();
+
         }
-        public void Validate()
-        {
-            if (Latitud < -90 || Latitud > 90)
-            {
-                throw new AgenciaException("Latitud fuera de rango");
-            }
-            if (Longitud < -180 || Longitud > 180)
-            {
-                throw new AgenciaException("Longitud fuera de rango");
-            }
-        }
+        
     }
 }

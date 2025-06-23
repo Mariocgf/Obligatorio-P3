@@ -131,7 +131,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception error)
             {
-                return StatusCode(500, "Error interno :(");
+                return StatusCode(500, "Error interno del servidor.");
             }
         }
     }

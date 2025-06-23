@@ -8,6 +8,7 @@ namespace Compartido.DTOs.Envio
 {
     public class EnvioBuscadoXComentarioDto
     {
+        public int Id { get; set; }
         public string NroTracking { get; set; }
         public string Comentario { get; set; }
         public DateTime Fecha { get; set; }

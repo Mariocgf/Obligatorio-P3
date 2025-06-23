@@ -135,6 +135,9 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.TipoEnvio)
                     </td>
+                    <td>
+                        @Html.ActionLink("Seguimientos", "Seguimientos", new { idEnvio = item.Id })
+                    </td>
                 </tr>
             }
         </tbody>
