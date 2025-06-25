@@ -22,7 +22,15 @@ namespace WebAPI.Controllers
             _usuarioLogin = usuarioLogin;
             _cambiarPassword = cambiarPassword;
         }
-        
+        // POST api/<UsuarioController>/login
+        /// <summary>
+        /// Login de un usuario.
+        /// </summary>
+        /// <returns></returns>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginDTO loginDto)
         {
@@ -46,6 +54,15 @@ namespace WebAPI.Controllers
             }
         }
         // PUT api/<UsuarioController>/
+        /// <summary>
+        /// Cambia la contraseña del usuario autenticado.
+        /// </summary>
+        /// <returns></returns>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Cliente")]
         [HttpPut("changePassword")]
         public IActionResult ChangePassword([FromBody] CambioPasswordDto dto)

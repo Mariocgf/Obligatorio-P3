@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using MVC.Helpers;
+using MVC.Helpers.Interface;
 using MVC.Models;
 using MVC.Models.Envio;
 using Newtonsoft.Json;
@@ -11,9 +11,9 @@ namespace MVC.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly Conexion _conexion;
+        private readonly IConexion _conexion;
 
-        public HomeController(ILogger<HomeController> logger, Conexion conexion)
+        public HomeController(ILogger<HomeController> logger, IConexion conexion)
         {
             _conexion = conexion;
             _logger = logger;

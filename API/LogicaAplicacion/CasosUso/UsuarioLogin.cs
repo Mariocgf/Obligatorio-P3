@@ -21,7 +21,7 @@ namespace LogicaAplicacion.CasosUso
         }
         public UsuarioLoggedDTO Login(LoginDTO loginDto)
         {
-            Usuario? usuario = _repoUsuario.GetByEmail(loginDto.email) ?? throw new UsuarioException("Credenciales invalidas");
+            Usuario? usuario = _repoUsuario.Login(loginDto.Email, loginDto.Password) ?? throw new UsuarioException("Credenciales invalidas");
             Rol rol = _repoRol.GetById(usuario.RolId);
             return UsuarioMapper.UsuarioTOUsurioLoggedDTO(usuario, rol);
         }

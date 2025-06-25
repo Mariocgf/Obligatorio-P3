@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MVC.Filter;
-using MVC.Helpers;
+using MVC.Helpers.Interface;
 using MVC.Models.Usuario;
 using Newtonsoft.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -10,8 +10,8 @@ namespace MVC.Controllers
 {
     public class UsuarioController : Controller
     {
-        private readonly Conexion _conexion;
-        public UsuarioController(Conexion conexion)
+        private readonly IConexion _conexion;
+        public UsuarioController(IConexion conexion)
         {
             _conexion = conexion;
         }
@@ -66,15 +66,16 @@ namespace MVC.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Login");
         }
-
+        [IsAuthenticated]
         [HttpGet]
         public IActionResult ChangePassword()
         {
             ChangePasswordViewModel chPassVM = new ChangePasswordViewModel();
             return View(chPassVM);
         }
+        [IsAuthenticated]
         [HttpPost]
-        public IActionResult ChangePassword(ChangePasswordViewModel chPassVW)
+        public IActionResult ChangePassword(ChangePasswordViewModel chPassVM)
         {
             try
             {
@@ -82,8 +83,8 @@ namespace MVC.Controllers
                 string token = HttpContext.Session.GetString("Token");
                 if (ModelState.IsValid)
                 {
-                    chPassVW.Id = usuarioId;
-                    var (IsSuccessStatusCode, datos) = _conexion.Start("usuario/changePassword", "PUT", token, chPassVW);
+                    chPassVM.Id = usuarioId;
+                    var (IsSuccessStatusCode, datos) = _conexion.Start("usuario/changePassword", "PUT", token, chPassVM);
                     if (IsSuccessStatusCode)
                     {
                         ViewBag.Msg = "Contraseña cambiada correctamente.";
@@ -101,7 +102,7 @@ namespace MVC.Controllers
             {
                 ViewBag.Msg = "Error";
             }
-            return View(chPassVW);
+            return View(chPassVM);
         }
     }
 }

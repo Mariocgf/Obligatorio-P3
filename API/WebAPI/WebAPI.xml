@@ -11,5 +11,42 @@
             <param name="nroTracking"> Numero de tracking del envio a consultar.</param>
             <returns></returns>
         </member>
+        <member name="M:WebAPI.Controllers.EnvioController.GetEnviosUsuario(System.Int32)">
+            <summary>
+            Obtiene todos los envios del cliente autenticado.
+            </summary>
+            <param name="id"> ID del usuario autenticado.</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.EnvioController.GetEnvioFechaUsuario(Compartido.DTOs.Envio.EnvioXFechaDto)">
+            <summary>
+            Obtiene los envios del cliente autenticado filtrados por fecha y tambien por estado.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.EnvioController.GetEnvioXComentario(Compartido.DTOs.Envio.EnvioXComentarioDto)">
+            <summary>
+            Obtiene los envios del cliente autenticado filtrados por comentario.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.EnvioController.GetSeguimientos(System.Int32)">
+            <summary>
+            Obtiene los seguimientos de un envio especifico del cliente autenticado.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.UsuarioController.Login(Compartido.DTOs.LoginDTO)">
+            <summary>
+            Login de un usuario.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebAPI.Controllers.UsuarioController.ChangePassword(Compartido.DTOs.Usuario.CambioPasswordDto)">
+            <summary>
+            Cambia la contraseña del usuario autenticado.
+            </summary>
+            <returns></returns>
+        </member>
     </members>
 </doc>

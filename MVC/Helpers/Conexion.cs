@@ -1,10 +1,11 @@
-﻿using MVC.Models.Usuario;
+﻿using MVC.Helpers.Interface;
+using MVC.Models.Usuario;
 using System.Runtime.Intrinsics.Arm;
 using System.Security.Policy;
 
 namespace MVC.Helpers
 {
-    public class Conexion
+    public class Conexion : IConexion
     {
         private readonly string urlBase;
         public Conexion(IConfiguration configuration)

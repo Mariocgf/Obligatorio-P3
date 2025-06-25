@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MVC.Helpers;
+using MVC.Filter;
+using MVC.Helpers.Interface;
 using MVC.Models.Envio;
 using Newtonsoft.Json;
 
 namespace MVC.Controllers
 {
+    [IsAuthenticated]
     public class EnvioController : Controller
     {
-        private readonly Conexion _conexion;
-        public EnvioController(Conexion conexion)
+        private readonly IConexion _conexion;
+        public EnvioController(IConexion conexion)
         {
             _conexion = conexion;
         }

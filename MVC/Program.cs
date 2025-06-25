@@ -1,5 +1,6 @@
 
 using MVC.Helpers;
+using MVC.Helpers.Interface;
 
 namespace MVC
 {
@@ -13,7 +14,7 @@ namespace MVC
             builder.Services.AddControllersWithViews();
             builder.Services.AddSession();
 
-            builder.Services.AddScoped<Conexion>();
+            builder.Services.AddScoped<IConexion, Conexion>();
 
             var app = builder.Build();
 

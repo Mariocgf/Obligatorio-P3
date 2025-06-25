@@ -56,6 +56,14 @@ namespace WebAPI.Controllers
                 return StatusCode(500, "Error interno :(");
             }
         }
+        /// <summary>
+        /// Obtiene todos los envios del cliente autenticado.
+        /// </summary>
+        /// <param name="id"> ID del usuario autenticado.</param>
+        /// <returns></returns>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Cliente")]
         [HttpGet("usuario/{id}")]
         public IActionResult GetEnviosUsuario(int id)
@@ -67,15 +75,22 @@ namespace WebAPI.Controllers
                 List<EnvioUsuarioDto> envios = _obtenerEnviosUsuario.Ejecutar(id);
                 return Ok(envios);
             }
-            catch (EnvioException error)
+            catch (UsuarioException error)
             {
-                return BadRequest(error.Message);
+                return NotFound(error.Message);
             }
             catch (Exception error)
             {
                 return StatusCode(500, "Error interno :(");
             }
         }
+        /// <summary>
+        /// Obtiene los envios del cliente autenticado filtrados por fecha y tambien por estado.
+        /// </summary>
+        /// <returns></returns>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Cliente")]
         [HttpGet("fecha")]
         public IActionResult GetEnvioFechaUsuario([FromQuery] EnvioXFechaDto dto)
@@ -95,7 +110,18 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(e.Message);
             }
+            catch (Exception)
+            {
+                return StatusCode(500, "Error interno del servidor.");
+            }
         }
+        /// <summary>
+        /// Obtiene los envios del cliente autenticado filtrados por comentario.
+        /// </summary>
+        /// <returns></returns>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Cliente")]
         [HttpGet("comentario")]
         public IActionResult GetEnvioXComentario([FromQuery] EnvioXComentarioDto dto)
@@ -115,6 +141,13 @@ namespace WebAPI.Controllers
                 return StatusCode(500, "Error interno del servidor.");
             }
         }
+        /// <summary>
+        /// Obtiene los seguimientos de un envio especifico del cliente autenticado.
+        /// </summary>
+        /// <returns></returns>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Cliente")]
         [HttpGet("seguimientos/{idEnvio}")]
         public IActionResult GetSeguimientos(int idEnvio)

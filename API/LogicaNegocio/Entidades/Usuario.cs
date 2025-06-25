@@ -32,7 +32,7 @@ namespace LogicaNegocio.Entidades
             Validate();
             FormatearCedula();
         }
-        public Usuario() { }
+        private Usuario() { }
         public void Validate()
         {
             if(string.IsNullOrEmpty(CI))
